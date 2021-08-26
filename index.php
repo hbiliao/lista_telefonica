@@ -1,76 +1,17 @@
 <?php
 
-include('links.php'); ?>
+include('importacoes.php'); ?>
+
 <html ng-app="listaTelefonica">
 <head>
     <title>Lista Telefonica</title>
-    <style>
-        .jumbotron {
-            width: 720px;
-            text-align: center;
-            margin-top: 20px;
-            margin-left: auto;
-            margin-right: auto;
-        }
-
-        .table {
-            margin-top: 20px;
-        }
-
-        .form-control {
-            margin-bottom: 5px;
-        }
-
-        .negrito {
-            font-weight: bold;
-        }
-    </style>
-    <script>
-        angular.module("listaTelefonica", ["ngMessages"]);
-        angular.module("listaTelefonica").controller("listaTelefonicaCtrl", ($scope, $http) => {
-            $scope.titulo = "Lista Telefonica"; //h3, ng-bind
-            $scope.contatos = [];
-            $scope.operadoras = [];
-
-            var carregarContatos = () => {
-                $http.get("http://localhost/contatosBackend.php").then(response => $scope.contatos = response.data);
-            };
-
-            var carregarOperadoras = () => {
-                $http.get("http://localhost/operadoras.php").then(response => $scope.operadoras = response.data);
-            };
-
-            $scope.adicionarContato = contato => {
-                contato.data = new Date();
-                $http.post("http://localhost/contatosBackend.php", contato).then(() => {
-                    delete $scope.contato;
-                    $scope.contatoForm.$setPristine();
-                    carregarContatos();
-                });
-            };
-
-            $scope.apagarContatos = contatos => {
-                $scope.contatos = contatos.filter(contato => {
-                    if (!contato.selecionado)
-                        return contato
-                });
-            };
-            $scope.isContatoSelecionado = contatos => contatos.some(contato => contato.selecionado);
-
-            $scope.ordenarPor = campo => {
-                $scope.criterioDeOrdenacao = campo;
-                $scope.direcaoDaOrdenacao = !$scope.direcaoDaOrdenacao;
-            };
-
-            carregarContatos();
-            carregarOperadoras();
-
-        });
-    </script>
 </head>
 <body ng-controller="listaTelefonicaCtrl">
 <div class="jumbotron">
     <h3>{{titulo}}</h3>
+    <ui-alert title="Ops, aconteceu um problema!">
+        Não foi possivel carregar os dados
+    </ui-alert>
     <input class="form-control" type="text" ng-model="criterioDeBusca" placeholder="O que você está buscando?"/>
     <table ng-show="contatos.length > 0" class="table table-striped">
         <thead>
@@ -83,10 +24,10 @@ include('links.php'); ?>
         <tr ng-class="{'negrito': contato.selecionado}"
             ng-repeat="contato in contatos | filter:criterioDeBusca | orderBy:criterioDeOrdenacao:direcaoDaOrdenacao">
             <td><input type="checkbox" ng-model="contato.selecionado"/></td>
-            <td>{{contato.nome}}</td>
+            <td>{{contato.nome | name | ellipsis:10 }}</td>
             <td>{{contato.telefone}}</td>
             <td>{{contato.operadora.nome}}</td>
-            <td>{{contato.data | date:'dd/MM/yyyy HH:mm'}}</td>
+            <td>{{contato.data | date:'dd/MM/yyyy'}}</td>
         </tr>
     </table>
     <hr/>
@@ -96,6 +37,7 @@ include('links.php'); ?>
         <input class="form-control" type="text" ng-model="contato.telefone" name="telefone" ng-required="true"
                placeholder="Telefone"
                ng-pattern="/^\d{4,5}-\d{3,4}$/"/>
+        <input class="form-control" type="text" ng-model="contato.data" name="data" placeholder="Data" ui-date/>
         <select class="form-control" ng-model="contato.operadora"
                 ng-options="operadora.nome + ' ( ' + (operadora.preco | currency) + ' )' for operadora in operadoras | orderBy:'nome'">
             <option value="">Selecione uma operadora</option>
@@ -124,6 +66,6 @@ include('links.php'); ?>
         Apagar Contatos
     </button>
 </div>
-<div ng-include="'footer.php'"></div>
+<div ng-include="'view/footer.php'"></div>
 </body>
 </html>
