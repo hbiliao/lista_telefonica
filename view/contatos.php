@@ -1,8 +1,8 @@
 <div class="jumbotron">
     <h3>{{titulo}}</h3>
-    <ui-alert title="Ops, aconteceu um problema!">
-        Não foi possivel carregar os dados
-    </ui-alert>
+<!--    <ui-alert title="Ops, aconteceu um problema!">-->
+<!--        Não foi possivel carregar os dados-->
+<!--    </ui-alert>-->
     <input class="form-control" type="text" ng-model="criterioDeBusca" placeholder="O que você está buscando?"/>
     <table ng-show="contatos.length > 0" class="table table-striped">
         <thead>
@@ -15,7 +15,7 @@
         <tr ng-class="{'negrito': contato.selecionado}"
             ng-repeat="contato in contatos | filter:criterioDeBusca | orderBy:criterioDeOrdenacao:direcaoDaOrdenacao">
             <td><input type="checkbox" ng-model="contato.selecionado"/></td>
-            <td>{{contato.nome | name | ellipsis:10 }}</td>
+            <td><a href="#/detalhesContato/{{contato.id}}">{{contato.nome | name}}</a></td>
             <td>{{contato.telefone}}</td>
             <td>{{contato.operadora.nome}}</td>
             <td>{{contato.data | date:'dd/MM/yyyy'}}</td>

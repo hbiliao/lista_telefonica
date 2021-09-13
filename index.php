@@ -1,5 +1,5 @@
-<?php include('importacoes.php'); ?>
-
+<?php
+include('importacoes.php'); ?>
 <html ng-app="listaTelefonica">
 <head>
     <title>Lista Telefonica</title>

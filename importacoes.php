@@ -8,6 +8,7 @@
 <script src="js/app.js"></script>
 <script src="js/controllers/listaTelefonicaCtrl.js"></script>
 <script src="js/controllers/novoContatoCtrl.js"></script>
+<script src="js/controllers/detalhesContatoCtrl.js"></script>
 <script src="services/contatosAPIService.js"></script>
 <script src="services/operadorasAPIService.js"></script>
 <script src="js/config/routeConfig.js"></script>

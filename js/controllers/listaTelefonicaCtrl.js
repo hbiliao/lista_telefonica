@@ -3,6 +3,8 @@ angular.module("listaTelefonica").controller("listaTelefonicaCtrl", function($sc
     $scope.contatos = [];
     $scope.operadoras = [];
 
+    //console.log(operadoras);
+
     var carregarContatos = () => {
         contatosAPI.getContatos().then(response => $scope.contatos = response.data);
     };
